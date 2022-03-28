@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { FinancesController } from './finances.controller';
+import { FinancesController } from './controllers/finances.controller';
 
 @Module({
   controllers: [FinancesController],
