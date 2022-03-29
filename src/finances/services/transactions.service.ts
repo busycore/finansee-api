@@ -1,11 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateFinanceDTO } from '../dtos/create-finance.dto';
 import { Transaction } from '../models/transaction.model';
+import { ITransactionRepository } from '../repositories/ITransaction.repository';
 import { TransactionsRepository } from '../repositories/transactions-repository.service';
 
 @Injectable()
 export class TransactionsService {
-  constructor(private transactionsRepository: TransactionsRepository) {}
+  constructor(
+    @Inject('TRANSACTIONS_REPOSITORY')
+    private transactionsRepository: ITransactionRepository,
+  ) {}
 
   public async getAllTransactions(): Promise<Transaction[]> {
     const found = await this.transactionsRepository.getAllTransactions();
@@ -25,9 +29,8 @@ export class TransactionsService {
       value,
       date,
     };
-    const mongoCreatedTransaction = await this.transactionsRepository.createTransaction(
-      newTransaction,
-    );
+    const mongoCreatedTransaction =
+      await this.transactionsRepository.createTransaction(newTransaction);
     return mongoCreatedTransaction;
   }
 }
