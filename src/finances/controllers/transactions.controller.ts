@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { CreateFinanceDTO } from '../dtos/create-finance.dto';
 import { FilterTransactionDTO } from '../dtos/filter-transaction.dto';
+import { SearchTransactionDTO } from '../dtos/search-transaction.dto';
 import {
   Transaction,
   TransactionCategory,
@@ -25,6 +26,14 @@ export class TransactionsController {
     const filter: FilterTransactionDTO = { category, type };
     console.log(filter);
     return this.financesService.getFilteredTransactions(filter);
+  }
+
+  @Get('/search')
+  public async searchTransactions(
+    @Query('keyword') keyword: string,
+  ): Promise<Transaction[]> {
+    const filter: SearchTransactionDTO = { keyword };
+    return this.financesService.searchTransactions(filter);
   }
 
   @Post()

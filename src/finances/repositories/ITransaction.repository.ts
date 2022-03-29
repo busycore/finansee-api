@@ -1,4 +1,5 @@
 import { FilterTransactionDTO } from '../dtos/filter-transaction.dto';
+import { SearchTransactionDTO } from '../dtos/search-transaction.dto';
 import { Transaction } from '../models/transaction.model';
 
 export interface ITransactionRepository {
@@ -6,5 +7,8 @@ export interface ITransactionRepository {
   getAllTransactions(): Promise<Transaction[]>;
   getFilteredTransactions(
     filterTransactionDTO: FilterTransactionDTO,
+  ): Promise<Transaction[]>;
+  searchTransactions(
+    searchTransactionDTO: SearchTransactionDTO,
   ): Promise<Transaction[]>;
 }

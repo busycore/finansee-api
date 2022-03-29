@@ -1,6 +1,7 @@
 import { Inject, Injectable, Query } from '@nestjs/common';
 import { CreateFinanceDTO } from '../dtos/create-finance.dto';
 import { FilterTransactionDTO } from '../dtos/filter-transaction.dto';
+import { SearchTransactionDTO } from '../dtos/search-transaction.dto';
 import {
   Transaction,
   TransactionCategory,
@@ -26,6 +27,10 @@ export class TransactionsService {
     filter: FilterTransactionDTO,
   ): Promise<Transaction[]> {
     return await this.transactionsRepository.getFilteredTransactions(filter);
+  }
+
+  public async searchTransactions(filter: SearchTransactionDTO) {
+    return await this.transactionsRepository.searchTransactions(filter);
   }
 
   public async createTransaction(
