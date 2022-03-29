@@ -1,18 +1,13 @@
 import { Controller, Get } from '@nestjs/common';
-import { Finance, FinanceCategory, FinanceType } from '../models/finance.model';
+import { Finance } from '../models/finance.model';
+import { FinancesService } from '../services/finances.service';
 
 @Controller('finances')
 export class FinancesController {
+  constructor(private financesService: FinancesService) {}
+
   @Get()
   public getAllFinances(): Finance[] {
-    const newFin: Finance = {
-      id: '123',
-      name: 'Mr Donald Order',
-      category: FinanceCategory.FOOD,
-      type: FinanceType.EXPENSE,
-      value: 35.49,
-      date: new Date(),
-    };
-    return [newFin];
+    return this.financesService.getAllFinances();
   }
 }
