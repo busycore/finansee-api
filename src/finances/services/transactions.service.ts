@@ -1,6 +1,11 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Query } from '@nestjs/common';
 import { CreateFinanceDTO } from '../dtos/create-finance.dto';
-import { Transaction } from '../models/transaction.model';
+import { FilterTransactionDTO } from '../dtos/filter-transaction.dto';
+import {
+  Transaction,
+  TransactionCategory,
+  TransactionType,
+} from '../models/transaction.model';
 import { ITransactionRepository } from '../repositories/ITransaction.repository';
 import { TransactionsRepository } from '../repositories/transactions-repository.service';
 
@@ -15,6 +20,12 @@ export class TransactionsService {
     const found = await this.transactionsRepository.getAllTransactions();
     console.log(found);
     return found;
+  }
+
+  public async getFilteredTransactions(
+    filter: FilterTransactionDTO,
+  ): Promise<Transaction[]> {
+    return await this.transactionsRepository.getFilteredTransactions(filter);
   }
 
   public async createTransaction(
