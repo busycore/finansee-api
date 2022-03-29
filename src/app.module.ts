@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FinancesModule } from './finances/finances.module';
-import { Finance } from './finances/models/finance.model';
+import { Transaction } from './finances/models/transaction.model';
 
 @Module({
   imports: [
@@ -10,7 +10,7 @@ import { Finance } from './finances/models/finance.model';
       url: 'mongodb://localhost',
       database: 'transactions',
       synchronize: true,
-      entities: [Finance],
+      entities: [Transaction],
       useUnifiedTopology: true,
       useNewUrlParser: true,
     }),

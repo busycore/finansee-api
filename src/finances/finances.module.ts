@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { FinancesController } from './controllers/finances.controller';
-import { Finance } from './models/finance.model';
-import { FinanceRepository } from './repositories/finance.repository';
-import { FinancesService } from './services/finances.service';
+import { TransactionsController } from './controllers/transactions.controller';
+import { Transaction } from './models/transaction.model';
+import { TransactionsRepository } from './repositories/transactions-repository.service';
+import { TransactionsService } from './services/transactions.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Finance])],
-  controllers: [FinancesController],
-  providers: [FinancesService, FinanceRepository],
+  imports: [TypeOrmModule.forFeature([Transaction])],
+  controllers: [TransactionsController],
+  providers: [TransactionsService, TransactionsRepository],
 })
 export class FinancesModule {}

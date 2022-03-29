@@ -1,17 +1,17 @@
 import { IsEnum, IsNotEmpty } from 'class-validator';
-import { FinanceCategory, FinanceType } from '../models/finance.model';
+import { TransactionCategory, TransactionType } from '../models/transaction.model';
 
 export class CreateFinanceDTO {
   @IsNotEmpty({ message: 'Name is required' })
   name: string;
 
   @IsNotEmpty({ message: 'Category is required' })
-  @IsEnum(FinanceCategory)
-  category: FinanceCategory;
+  @IsEnum(TransactionCategory)
+  category: TransactionCategory;
 
   @IsNotEmpty({ message: 'Type is required' })
-  @IsEnum(FinanceType)
-  type: FinanceType;
+  @IsEnum(TransactionType)
+  type: TransactionType;
 
   @IsNotEmpty({ message: 'Number is required' })
   value: number;

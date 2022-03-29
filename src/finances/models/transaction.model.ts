@@ -1,7 +1,7 @@
 import { Column, Entity, ObjectIdColumn } from 'typeorm';
 
 @Entity()
-export class Finance {
+export class Transaction {
   @ObjectIdColumn()
   id: string;
 
@@ -9,10 +9,10 @@ export class Finance {
   name: string;
 
   @Column()
-  category: FinanceCategory;
+  category: TransactionCategory;
 
   @Column()
-  type: FinanceType;
+  type: TransactionType;
 
   @Column()
   value: number;
@@ -21,7 +21,7 @@ export class Finance {
   date: Date;
 }
 
-export enum FinanceCategory {
+export enum TransactionCategory {
   SALARY = 'Salary',
   FOOD = 'Food',
   TRANSPORT = 'Transport',
@@ -29,7 +29,7 @@ export enum FinanceCategory {
   OTHER = 'Other',
 }
 
-export enum FinanceType {
+export enum TransactionType {
   INCOME = 'Income',
   EXPENSE = 'Expense',
 }
