@@ -1,26 +1,35 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { CreateFinanceDTO } from '../dtos/create-finance.dto';
-import { Finance, FinanceCategory, FinanceType } from '../models/finance.model';
+import { Finance } from '../models/finance.model';
+import { FinanceRepository } from '../repositories/finance.repository';
 
 @Injectable()
 export class FinancesService {
-  private FinancesData: Finance[] = [];
+  constructor(
+    @InjectRepository(FinanceRepository)
+    private financeRepository: FinanceRepository,
+  ) {}
 
-  public getAllFinances(): Finance[] {
-    return this.FinancesData;
+  public async getAllFinances(): Promise<Finance[]> {
+    const found = await this.financeRepository.find();
+    console.log(found);
+    return found;
   }
 
-  public createFinance(createFinanceDTO: CreateFinanceDTO): Finance {
+  public async createFinance(
+    createFinanceDTO: CreateFinanceDTO,
+  ): Promise<Finance> {
     const { name, type, category, value, date } = createFinanceDTO;
+
     const newFinance = {
-      id: '123',
       name,
       type,
       category,
       value,
       date,
     };
-    this.FinancesData.push(newFinance);
-    return newFinance;
+    const mongoFinance = await this.financeRepository.save(newFinance);
+    return mongoFinance;
   }
 }

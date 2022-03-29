@@ -8,12 +8,14 @@ export class FinancesController {
   constructor(private financesService: FinancesService) {}
 
   @Get()
-  public getAllFinances(): Finance[] {
+  public async getAllFinances(): Promise<Finance[]> {
     return this.financesService.getAllFinances();
   }
 
   @Post()
-  public createFinance(@Body() createFinanceDTO: CreateFinanceDTO): Finance {
+  public async createFinance(
+    @Body() createFinanceDTO: CreateFinanceDTO,
+  ): Promise<Finance> {
     return this.financesService.createFinance(createFinanceDTO);
   }
 }

@@ -1,9 +1,23 @@
+import { Column, Entity, ObjectIdColumn } from 'typeorm';
+
+@Entity()
 export class Finance {
+  @ObjectIdColumn()
   id: string;
+
+  @Column()
   name: string;
+
+  @Column()
   category: FinanceCategory;
+
+  @Column()
   type: FinanceType;
+
+  @Column()
   value: number;
+
+  @Column()
   date: Date;
 }
 
