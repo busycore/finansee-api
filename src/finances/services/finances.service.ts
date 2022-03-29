@@ -1,18 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { CreateFinanceDTO } from '../dtos/create-finance.dto';
 import { Finance } from '../models/finance.model';
 import { FinanceRepository } from '../repositories/finance.repository';
 
 @Injectable()
 export class FinancesService {
-  constructor(
-    @InjectRepository(FinanceRepository)
-    private financeRepository: FinanceRepository,
-  ) {}
+  constructor(private financeRepository: FinanceRepository) {}
 
   public async getAllFinances(): Promise<Finance[]> {
-    const found = await this.financeRepository.find();
+    const found = await this.financeRepository.getAllTransactions();
     console.log(found);
     return found;
   }
@@ -29,7 +25,9 @@ export class FinancesService {
       value,
       date,
     };
-    const mongoFinance = await this.financeRepository.save(newFinance);
+    const mongoFinance = await this.financeRepository.createTransaction(
+      newFinance,
+    );
     return mongoFinance;
   }
 }
