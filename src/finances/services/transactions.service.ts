@@ -1,4 +1,10 @@
-import { Inject, Injectable, Query } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  Query,
+} from '@nestjs/common';
 import { CreateFinanceDTO } from '../dtos/create-finance.dto';
 import { FilterTransactionDTO } from '../dtos/filter-transaction.dto';
 import { SearchTransactionDTO } from '../dtos/search-transaction.dto';
@@ -19,8 +25,18 @@ export class TransactionsService {
 
   public async getAllTransactions(): Promise<Transaction[]> {
     const found = await this.transactionsRepository.getAllTransactions();
-    console.log(found);
     return found;
+  }
+
+  public async getTransactionById(objectId: string): Promise<Transaction> {
+    const foundTransaction =
+      await this.transactionsRepository.getTransactionById(objectId);
+
+    if (!foundTransaction) {
+      throw new HttpException('Transaction not found', HttpStatus.NOT_FOUND);
+    }
+
+    return foundTransaction;
   }
 
   public async getFilteredTransactions(
@@ -48,5 +64,10 @@ export class TransactionsService {
     const mongoCreatedTransaction =
       await this.transactionsRepository.createTransaction(newTransaction);
     return mongoCreatedTransaction;
+  }
+
+  async deleteTransaction(objectId: string): Promise<void> {
+    await this.getTransactionById(objectId);
+    await this.transactionsRepository.deleteTransaction(objectId);
   }
 }

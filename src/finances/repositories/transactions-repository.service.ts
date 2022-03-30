@@ -14,6 +14,10 @@ export class TransactionsRepository implements ITransactionRepository {
     private readonly mongoRepository: MongoRepository<Transaction>,
   ) {}
 
+  async deleteTransaction(objectId: string): Promise<void> {
+    this.mongoRepository.delete(objectId);
+  }
+
   async searchTransactions(
     searchTransactionDTO: SearchTransactionDTO,
   ): Promise<Transaction[]> {
@@ -46,6 +50,11 @@ export class TransactionsRepository implements ITransactionRepository {
   ): Promise<Transaction> {
     return this.mongoRepository.save(transaction);
   }
+
+  getTransactionById(objectId: string): Promise<Transaction> {
+    return this.mongoRepository.findOne(objectId);
+  }
+
   async getAllTransactions(): Promise<Transaction[]> {
     return this.mongoRepository.find();
   }

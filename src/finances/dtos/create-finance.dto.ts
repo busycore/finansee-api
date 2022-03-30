@@ -1,5 +1,8 @@
 import { IsEnum, IsNotEmpty } from 'class-validator';
-import { TransactionCategory, TransactionType } from '../models/transaction.model';
+import {
+  TransactionCategory,
+  TransactionType,
+} from '../models/transaction.model';
 
 export class CreateFinanceDTO {
   @IsNotEmpty({ message: 'Name is required' })
