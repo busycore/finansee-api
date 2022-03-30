@@ -9,9 +9,9 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Finances API')
-    .setDescription('An api to help to track your finances')
+    .setDescription('An api to help to track your transactions')
     .setVersion('1.0')
-    .addTag('finances')
+    .addTag('transactions')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

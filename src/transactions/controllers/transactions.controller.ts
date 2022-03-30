@@ -18,7 +18,7 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
-import { CreateFinanceDTO } from '../dtos/create-finance.dto';
+import { CreateTransactionDto } from '../dtos/create-transaction.dto';
 import { FilterTransactionDTO } from '../dtos/filter-transaction.dto';
 import { SearchTransactionDTO } from '../dtos/search-transaction.dto';
 import {
@@ -28,10 +28,10 @@ import {
 } from '../models/transaction.model';
 import { TransactionsService } from '../services/transactions.service';
 
-@ApiTags('finances')
+@ApiTags('transactions')
 @Controller('transactions')
 export class TransactionsController {
-  constructor(private financesService: TransactionsService) {}
+  constructor(private transactionsService: TransactionsService) {}
 
   @Get()
   @HttpCode(HttpStatus.OK)
@@ -43,7 +43,7 @@ export class TransactionsController {
     summary: 'Get a list of all transactions',
   })
   public async getAllFinances(): Promise<Transaction[]> {
-    return this.financesService.getAllTransactions();
+    return this.transactionsService.getAllTransactions();
   }
 
   @Get('/filter')
@@ -72,7 +72,7 @@ export class TransactionsController {
     @Query('category') category: TransactionCategory,
   ): Promise<Transaction[]> {
     const filter: FilterTransactionDTO = { category, type };
-    return this.financesService.getFilteredTransactions(filter);
+    return this.transactionsService.getFilteredTransactions(filter);
   }
 
   @Get('/search')
@@ -93,7 +93,7 @@ export class TransactionsController {
     @Query('keyword') keyword: string,
   ): Promise<Transaction[]> {
     const filter: SearchTransactionDTO = { keyword };
-    return this.financesService.searchTransactions(filter);
+    return this.transactionsService.searchTransactions(filter);
   }
 
   @Delete('/:id')
@@ -111,7 +111,7 @@ export class TransactionsController {
     summary: 'Deletes the transaction however does not return anything',
   })
   public async deleteFinance(@Param('id') objectId: string): Promise<void> {
-    return this.financesService.deleteTransaction(objectId);
+    return this.transactionsService.deleteTransaction(objectId);
   }
 
   @Post()
@@ -122,8 +122,8 @@ export class TransactionsController {
     summary: 'Creates a new transaction',
   })
   public async createFinance(
-    @Body() createFinanceDTO: CreateFinanceDTO,
+    @Body() createFinanceDTO: CreateTransactionDto,
   ): Promise<Transaction> {
-    return this.financesService.createTransaction(createFinanceDTO);
+    return this.transactionsService.createTransaction(createFinanceDTO);
   }
 }

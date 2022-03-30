@@ -5,7 +5,7 @@ import {
   TransactionType,
 } from '../models/transaction.model';
 
-export class CreateFinanceDTO {
+export class CreateTransactionDto {
   @ApiProperty({
     example: 'Burger Queen Order',
     description: 'The name of the transaction',

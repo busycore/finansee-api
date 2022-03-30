@@ -13,4 +13,4 @@ import { TransactionsService } from './services/transactions.service';
     { provide: 'TRANSACTIONS_REPOSITORY', useClass: TransactionsRepository },
   ],
 })
-export class FinancesModule {}
+export class TransactionsModule {}

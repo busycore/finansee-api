@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { FinancesModule } from './finances/finances.module';
-import { Transaction } from './finances/models/transaction.model';
+import { TransactionsModule } from './transactions/transactions.module';
+import { Transaction } from './transactions/models/transaction.model';
 
 @Module({
   imports: [
@@ -17,7 +17,7 @@ import { Transaction } from './finances/models/transaction.model';
       useNewUrlParser: true,
     }),
 
-    FinancesModule,
+    TransactionsModule,
   ],
   controllers: [],
   providers: [],

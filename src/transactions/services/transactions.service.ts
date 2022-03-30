@@ -5,7 +5,7 @@ import {
   Injectable,
   Query,
 } from '@nestjs/common';
-import { CreateFinanceDTO } from '../dtos/create-finance.dto';
+import { CreateTransactionDto } from '../dtos/create-transaction.dto';
 import { FilterTransactionDTO } from '../dtos/filter-transaction.dto';
 import { SearchTransactionDTO } from '../dtos/search-transaction.dto';
 import {
@@ -50,7 +50,7 @@ export class TransactionsService {
   }
 
   public async createTransaction(
-    createFinanceDTO: CreateFinanceDTO,
+    createFinanceDTO: CreateTransactionDto,
   ): Promise<Transaction> {
     const { name, type, category, value, date } = createFinanceDTO;
 
