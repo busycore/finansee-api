@@ -62,4 +62,4 @@ With a running instance of the project in development mode go to your browser
 
 ## 📜 Credits
 
-This project use extensevily NestJS and TypeORM alongside a bunch of wonderful another depencies.
+This project uses extensively NestJS and TypeORM alongside a bunch of wonderful another depencies.
