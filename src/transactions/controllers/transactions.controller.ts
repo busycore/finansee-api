@@ -19,7 +19,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { CreateTransactionDto } from '../dtos/create-transaction.dto';
-import { FilterTransactionDTO } from '../dtos/filter-transaction.dto';
 import { SearchTransactionDTO } from '../dtos/search-transaction.dto';
 import {
   Transaction,
@@ -46,10 +45,15 @@ export class TransactionsController {
     return this.transactionsService.getAllTransactions();
   }
 
-  @Get('/filter')
+  @Get('/search')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({
-    description: 'Get a list of all transactions within a filter',
+    description: 'Get a list of all transactions within a search keyword',
+  })
+  @ApiQuery({
+    name: 'keyword',
+    description: "A keyword to be search in transactions\\' value or name",
+    example: 'Subscription',
   })
   @ApiQuery({
     name: 'type',
@@ -64,35 +68,15 @@ export class TransactionsController {
     example: TransactionCategory.FOOD,
   })
   @ApiOperation({
-    description: 'Get a list of all transactions within a filter',
-    summary: 'Get a list of all transactions within a filter',
-  })
-  public async getFilteredTransactions(
-    @Query('type') type: TransactionType,
-    @Query('category') category: TransactionCategory,
-  ): Promise<Transaction[]> {
-    const filter: FilterTransactionDTO = { category, type };
-    return this.transactionsService.getFilteredTransactions(filter);
-  }
-
-  @Get('/search')
-  @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({
-    description: 'Get a list of all transactions within a search keyword',
-  })
-  @ApiQuery({
-    name: 'keyword',
-    description: "A keyword to be search in transactions\\' value or name",
-    example: 'Subscription',
-  })
-  @ApiOperation({
     description: 'Get a list of all transactions within a search keyword',
     summary: 'Get a list of all transactions within a search keyword',
   })
   public async searchTransactions(
     @Query('keyword') keyword: string,
+    @Query('type') type: TransactionType,
+    @Query('category') category: TransactionCategory,
   ): Promise<Transaction[]> {
-    const filter: SearchTransactionDTO = { keyword };
+    const filter: SearchTransactionDTO = { keyword, type, category };
     return this.transactionsService.searchTransactions(filter);
   }
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityRepository, Like, MongoRepository } from 'typeorm';
+import { EntityRepository, MongoRepository } from 'typeorm';
 import { FilterTransactionDTO } from '../dtos/filter-transaction.dto';
 import { SearchTransactionDTO } from '../dtos/search-transaction.dto';
 import { Transaction } from '../models/transaction.model';
@@ -21,28 +21,47 @@ export class TransactionsRepository implements ITransactionRepository {
   async searchTransactions(
     searchTransactionDTO: SearchTransactionDTO,
   ): Promise<Transaction[]> {
-    return this.mongoRepository.find({
+    Object.keys(searchTransactionDTO).forEach(
+      (filter) =>
+        searchTransactionDTO[filter] === undefined &&
+        delete searchTransactionDTO[filter],
+    );
+
+    console.log(searchTransactionDTO);
+    const keyword = searchTransactionDTO.keyword
+      ? searchTransactionDTO.keyword
+      : '';
+
+    const type = searchTransactionDTO.type ? searchTransactionDTO.type : '';
+
+    const category = searchTransactionDTO.category
+      ? searchTransactionDTO.category
+      : '';
+
+    const query = this.mongoRepository.find({
       where: {
-        $or: [
+        $and: [
           {
-            name: { $regex: searchTransactionDTO.keyword, $options: 'i' },
+            $or: [
+              {
+                name: { $regex: keyword, $options: 'i' },
+              },
+              { value: { $eq: Number(searchTransactionDTO.keyword) } },
+            ],
           },
-          { value: { $eq: Number(searchTransactionDTO.keyword) } },
+          {
+            type: {
+              $regex: type,
+              $options: 'i',
+            },
+          },
+          {
+            category: { $regex: category, $options: 'i' },
+          },
         ],
       },
     });
-  }
-
-  async getFilteredTransactions(
-    filterTransactionDTO: FilterTransactionDTO,
-  ): Promise<Transaction[]> {
-    //Remove undefined filters
-    Object.keys(filterTransactionDTO).forEach(
-      (filter) =>
-        filterTransactionDTO[filter] === undefined &&
-        delete filterTransactionDTO[filter],
-    );
-    return this.mongoRepository.find(filterTransactionDTO);
+    return query;
   }
 
   async createTransaction(

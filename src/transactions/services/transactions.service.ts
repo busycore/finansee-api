@@ -1,20 +1,8 @@
-import {
-  HttpException,
-  HttpStatus,
-  Inject,
-  Injectable,
-  Query,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { CreateTransactionDto } from '../dtos/create-transaction.dto';
-import { FilterTransactionDTO } from '../dtos/filter-transaction.dto';
 import { SearchTransactionDTO } from '../dtos/search-transaction.dto';
-import {
-  Transaction,
-  TransactionCategory,
-  TransactionType,
-} from '../models/transaction.model';
+import { Transaction } from '../models/transaction.model';
 import { ITransactionRepository } from '../repositories/ITransaction.repository';
-import { TransactionsRepository } from '../repositories/transactions-repository.service';
 
 @Injectable()
 export class TransactionsService {
@@ -37,12 +25,6 @@ export class TransactionsService {
     }
 
     return foundTransaction;
-  }
-
-  public async getFilteredTransactions(
-    filter: FilterTransactionDTO,
-  ): Promise<Transaction[]> {
-    return await this.transactionsRepository.getFilteredTransactions(filter);
   }
 
   public async searchTransactions(filter: SearchTransactionDTO) {
