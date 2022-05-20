@@ -1,8 +1,8 @@
-import { Column, Entity, ObjectIdColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class Transaction {
-  @ObjectIdColumn()
+  @PrimaryColumn()
   id: string;
 
   @Column()

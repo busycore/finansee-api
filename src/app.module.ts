@@ -8,15 +8,13 @@ import { Transaction } from './transactions/models/transaction.model';
   imports: [
     ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
     TypeOrmModule.forRoot({
-      type: 'mongodb',
-      url: process.env.MONGODB_URL,
-      database: process.env.MONGODB_DATABASE,
+      type: "better-sqlite3",
+      database: `:memory:`,
+      entities: [Transaction ],
+      dropSchema: true,
       synchronize: true,
-      entities: [Transaction],
-      useUnifiedTopology: true,
-      useNewUrlParser: true,
+      logging:true
     }),
-
     TransactionsModule,
   ],
   controllers: [],
