@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityRepository, Repository,Like } from "typeorm";
+import { EntityRepository, Repository, Like } from 'typeorm';
 import { SearchTransactionDTO } from '../dtos/search-transaction.dto';
 import { Transaction } from '../models/transaction.model';
 import { ITransactionRepository } from './ITransaction.repository';
 import { v4 as uuid } from 'uuid';
-
 
 @EntityRepository(Transaction)
 @Injectable()
@@ -30,54 +29,26 @@ export class TransactionsSqliteRepository implements ITransactionRepository {
 
     console.log(searchTransactionDTO);
     const keyword = searchTransactionDTO.keyword
-      ? searchTransactionDTO.keyword
-      : '';
+      ? `(name LIKE '%${searchTransactionDTO.keyword}%' ${
+          Number(searchTransactionDTO.keyword)
+            ? 'OR value =' + Number(searchTransactionDTO.keyword)
+            : ''
+        } ) `
+      : "name LIKE '%%'";
 
-    const Querytype = searchTransactionDTO.type ? searchTransactionDTO.type : '';
+    const Querytype = searchTransactionDTO.type
+      ? `type= '${searchTransactionDTO.type}'`
+      : '';
 
     const Querycategory = searchTransactionDTO.category
-      ? searchTransactionDTO.category
+      ? `category='${searchTransactionDTO.category}'`
       : '';
 
-    // const query = this.mongoRepository.find({
-    //   where: {
-    //     $and: [
-    //       {
-    //         $or: [
-    //           {
-    //             name: { $regex: keyword, $options: 'i' },
-    //           },
-    //           { value: { $eq: Number(searchTransactionDTO.keyword) } },
-    //         ],
-    //       },
-    //       {
-    //         type: {
-    //           $regex: type,
-    //           $options: 'i',
-    //         },
-    //       },
-    //       {
-    //         category: { $regex: category, $options: 'i' },
-    //       },
-    //     ],
-    //   },
-    // });
-
-    // const sqliteQuery = this.mongoRepository.find({where:{
-    //   type:Querytype,
-    //   category:Querycategory,
-    //
-    //   }});
-
-
+    const QueryList = [Querytype, Querycategory, keyword];
 
     const sqliteQuery = this.mongoRepository.find({
-      where:`type = '${Querytype}' AND category ='${Querycategory}'
-      
-      AND (name LIKE '%${keyword}%' ${Number(keyword) ? "OR value ="+Number(keyword) : ""} )
-      `});
-
-
+      where: QueryList.filter((query) => query !== '').join(' AND '),
+    });
 
     return sqliteQuery;
   }
@@ -85,8 +56,7 @@ export class TransactionsSqliteRepository implements ITransactionRepository {
   async createTransaction(
     transaction: Omit<Transaction, 'id'>,
   ): Promise<Transaction> {
-    const newTransaction = {...transaction,id:uuid()}
-
+    const newTransaction = { ...transaction, id: uuid() };
 
     return this.mongoRepository.save(newTransaction);
   }
