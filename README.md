@@ -18,6 +18,7 @@ APP_PORT=3005
 ## 🟢 Running the app
 
 ```bash
+# install the dependencies
 $ npm install
 
 # development
